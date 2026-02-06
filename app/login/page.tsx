@@ -2,21 +2,19 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const router = useRouter()
-  const supabase = createClient()
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setMessage(null)
 
     try {
+      const supabase = createClient()
       const origin = typeof window !== 'undefined' ? window.location.origin : ''
       const { error } = await supabase.auth.signInWithOtp({
         email,
